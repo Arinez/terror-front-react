@@ -6,12 +6,14 @@ function Login(leader: string, password:string) {
         return "user token"
     }
 
-    return "User or password incorrect";
+    return "incorrect";
 }
 
-function FakeAPI() {
+// TODO: logout
+
+function FakeLoginRepository() {
     return {
         Login
     }
 }
-export default FakeAPI
+export default FakeLoginRepository

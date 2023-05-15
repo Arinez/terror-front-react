@@ -2,15 +2,16 @@ import { useState } from "react";
 import TextInput from "../../components/TextInput";
 
 function LoginForm(props){
-    const {repository} = props
+    const {userRepository, setUser} = props
     const [leader, setLeader] = useState('');
     const [password, setPassword] = useState('');
-    const [data, setData] = useState('not set');
 
     function handleSubmit(e) {
         e.preventDefault(); // Prevents the page from reloading
-        const response = repository.Login(leader, password);
-        setData(response);
+        const response = userRepository.Login(leader, password);
+        if (response !== "incorrect"){
+            setUser({'token': response});
+        }
     }
 
     return (
