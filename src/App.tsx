@@ -1,27 +1,23 @@
 import './App.css'
-import LoginForm from './context/loginForm/LoginForm'
-import FakeUserRepository from './infra/FakeLoginRepository.tsx'
+import {LoginPage} from './pages/login/LoginPage.tsx'
+import {TeamType} from './services/getTeamTokenMock.tsx'
 import {useState} from "react";
-import Track from "./context/track/Track.tsx";
-import FakeTrackRepository from "./infra/FakeTrackRepository.tsx";
+import {TrackPage} from "./pages/track/TrackPage.tsx";
 
 function App() {
-    const [user, setUser] = useState()
-    const [track, setTrack] = useState()
+    const [team, setTeam] = useState<TeamType>()
 
-    // login -> token
-    // get track -> print checkpoint
-    // send answer -> [print next checkpoint, save answer]
-    if (!user) {
+    // TODO: loading component
+    if (!team) {
         return (
-            <><LoginForm userRepository={FakeUserRepository()} setUser={setUser}></LoginForm></>
+            <><LoginPage useTeam={setTeam}></LoginPage></>
         )
     }
-    if (user && user.token !== "admin token") {
-        setTrack(Track(user.token))
-        return (<><Track repository={FakeTrackRepository()} track={track} setTrack={setTrack}></Track></>)
+    if (team?.token !== "admin token") {
+        // TODO: team started
+        return (<><TrackPage team={team}></TrackPage></>)
     }
-    return (<>Logged in with: {user.token}</>)
+    return (<>Logged in with: {team.token}</>)
 }
 
 export default App
