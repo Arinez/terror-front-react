@@ -1,12 +1,19 @@
+import {ChangeEvent} from "react";
+
 type TextInputProps = {
     id: string,
     placeholder: string,
-    updateData: (value: string) => void,
+    onChange: (value: string) => void,
 }
-function TextInput ({id, placeholder, updateData}: TextInputProps){
+
+function TextInput({id, placeholder, onChange}: TextInputProps) {
+
+    function handleChange(e: ChangeEvent<HTMLInputElement>) {
+        onChange(e.target.value);
+    }
 
     return (
-        <input type="text" id={id} placeholder={placeholder} onChange={(e) => updateData(e.target.value)}/>
+        <input type="text" id={id} placeholder={placeholder} onChange={handleChange}/>
     )
 }
 

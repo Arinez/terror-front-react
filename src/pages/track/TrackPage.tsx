@@ -22,7 +22,7 @@ export const TrackPage = ({team}: TrackProps) => {
         <div>
             <form onSubmit={handleSubmit}>
                 <p>{checkpoint.question}</p>
-                <TextInput id="answer" placeholder="----" updateData={setAnswer}/>
+                <TextInput id="answer" placeholder="----" onChange={setAnswer}/>
                 <br/>
                 <button type="submit">Enviar</button>
             </form>
