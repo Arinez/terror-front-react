@@ -5,6 +5,8 @@ import {useEffect, useState} from "react";
 import {TrackPage} from "./pages/track/TrackPage.tsx";
 import Loading from "./components/Loading.tsx";
 import {StorageType} from "./services/localStorage.tsx";
+import LogOut from "./components/LogOut.tsx";
+import {logout} from "./services/logOut.tsx";
 
 type AppProps = {
     storage: StorageType,
@@ -24,9 +26,12 @@ function App({storage}: AppProps) {
         )
     }
     if (team?.token !== "admin token") {
-        return (<><TrackPage team={team}></TrackPage></>)
+        return (<TrackPage team={team} removeTeam={storage.removeTeam} setTeam={setTeam}></TrackPage> )
     }
-    return (<>Logged in with: {team.token}</>)
+    return (<>
+        <LogOut text={"Pa tu casa"} logout={logout({removeTeam : storage.removeTeam, setTeam : setTeam})}/>
+        Logged in with: {team.token}
+    </>)
 }
 
 export default App
