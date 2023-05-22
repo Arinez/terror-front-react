@@ -4,23 +4,17 @@ import {TeamType} from './services/getTeamTokenMock.tsx'
 import {useEffect, useState} from "react";
 import {TrackPage} from "./pages/track/TrackPage.tsx";
 import Loading from "./components/Loading.tsx";
+import {StorageType} from "./services/localStorage.tsx";
 
-function App() {
+type AppProps = {
+    storage: StorageType,
+}
+function App({storage}: AppProps) {
     const [team, setTeam] = useState<TeamType>()
     const [loading, setLoading] = useState<boolean>(false)
 
-    useEffect(() => {
-        const team = localStorage.getItem("team");
-        if (team !== null && team !== "undefined") {
-            setTeam(JSON.parse(team))
-        }
-    }, [])
-
-    useEffect(() => {
-        if (team !== undefined) {
-            window.localStorage.setItem("team", JSON.stringify(team))
-        }
-    }, [team])
+    useEffect(storage.loadTeam(setTeam), [])
+    useEffect(storage.storeTeam(team), [team])
 
     if (loading) return (<Loading text={"Cargando..."}/>)
 
