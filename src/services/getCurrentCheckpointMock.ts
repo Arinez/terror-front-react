@@ -1,4 +1,4 @@
-import {CheckpointType, TeamType} from "./getTeamTokenMock.tsx";
+import {CheckpointType, TeamType} from "./getTeamTokenMock.ts";
 
 const questions: string[] = [
   "¿Cuál es el nombre de la primera persona que llegó a la luna?",

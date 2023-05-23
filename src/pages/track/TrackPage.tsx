@@ -1,16 +1,20 @@
 import {FormEvent, useEffect, useState} from "react";
 import TextInput from "../../components/TextInput";
-import {CheckpointType, TeamType} from "../../services/getTeamTokenMock.tsx";
-import {getCurrentCheckpoint} from "../../services/getCurrentCheckpointMock.tsx";
-import {sendAnswer} from "../../services/sendAnswerMock.tsx";
+import {CheckpointType, TeamType} from "../../services/getTeamTokenMock.ts";
+import {getCurrentCheckpoint} from "../../services/getCurrentCheckpointMock.ts";
+import {sendAnswer} from "../../services/sendAnswerMock.ts";
 import Loading from "../../components/Loading.tsx";
+import LogOut from "../../components/LogOut.tsx";
+import {logout} from "../../services/logOut.ts";
 
 const emptyCheckpoint: CheckpointType = {question: "", answer: ""};
 
 type TrackProps = {
     team: TeamType,
+    onTeamChange: (team: TeamType | undefined) => void,
+    removeTeam: () => void,
 }
-export const TrackPage = ({team}: TrackProps) => {
+export const TrackPage = ({team, onTeamChange, removeTeam}: TrackProps) => {
     const [answer, setAnswer] = useState("");
     const [checkpoint, setCheckpoint] = useState<CheckpointType>(emptyCheckpoint);
     const [loading, setLoading] = useState<boolean>(true);
@@ -35,13 +39,16 @@ export const TrackPage = ({team}: TrackProps) => {
     if (loading) return (<Loading text={"Cargando..."}/>)
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <p>{checkpoint.question}</p>
-                <TextInput id="answer" placeholder="----" onChange={setAnswer}/>
-                <br/>
-                <button type="submit">Enviar</button>
-            </form>
-        </div>
+        <>
+            <LogOut text={"pa tu casa"} logout={logout({removeTeam : removeTeam, onTeamChange : onTeamChange})}/>
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <p>{checkpoint.question}</p>
+                    <TextInput id="answer" placeholder="----" onChange={setAnswer}/>
+                    <br/>
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
+        </>
     );
 };

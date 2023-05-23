@@ -1,6 +1,6 @@
 import {Dispatch, FormEvent, useState} from "react";
 import TextInput from "../../components/TextInput";
-import {getTeamToken, TeamType} from "../../services/getTeamTokenMock.tsx";
+import {getTeamToken, TeamType} from "../../services/getTeamTokenMock.ts";
 
 type LoginPageProps = {
     useTeam: Dispatch<TeamType>,
