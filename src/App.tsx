@@ -26,10 +26,10 @@ function App({storage}: AppProps) {
         )
     }
     if (team?.token !== "admin token") {
-        return (<TrackPage team={team} removeTeam={storage.removeTeam} setTeam={setTeam}></TrackPage> )
+        return (<TrackPage team={team} removeTeam={storage.removeTeam} onTeamChange={setTeam}></TrackPage> )
     }
     return (<>
-        <LogOut text={"Pa tu casa"} logout={logout({removeTeam : storage.removeTeam, setTeam : setTeam})}/>
+        <LogOut text={"Pa tu casa"} logout={logout({removeTeam : storage.removeTeam, onTeamChange : setTeam})}/>
         Logged in with: {team.token}
     </>)
 }

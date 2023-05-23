@@ -11,10 +11,10 @@ const emptyCheckpoint: CheckpointType = {question: "", answer: ""};
 
 type TrackProps = {
     team: TeamType,
-    setTeam: (team: TeamType | undefined) => void,
+    onTeamChange: (team: TeamType | undefined) => void,
     removeTeam: () => void,
 }
-export const TrackPage = ({team, setTeam, removeTeam}: TrackProps) => {
+export const TrackPage = ({team, onTeamChange, removeTeam}: TrackProps) => {
     const [answer, setAnswer] = useState("");
     const [checkpoint, setCheckpoint] = useState<CheckpointType>(emptyCheckpoint);
     const [loading, setLoading] = useState<boolean>(true);
@@ -40,7 +40,7 @@ export const TrackPage = ({team, setTeam, removeTeam}: TrackProps) => {
 
     return (
         <>
-            <LogOut text={"pa tu casa"} logout={logout({removeTeam : removeTeam, setTeam : setTeam})}/>
+            <LogOut text={"pa tu casa"} logout={logout({removeTeam : removeTeam, onTeamChange : onTeamChange})}/>
             <div>
                 <form onSubmit={handleSubmit}>
                     <p>{checkpoint.question}</p>
