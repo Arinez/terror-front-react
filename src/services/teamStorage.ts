@@ -1,15 +1,15 @@
 import {Dispatch} from "react";
 import {TeamType} from "./getTeamTokenMock.ts";
 
-export type StorageType = {
-    loadTeam: (setTeam: Dispatch<TeamType>) => () => void,
-    storeTeam: (team: TeamType | undefined) => () => void,
-    removeTeam: () => void,
+export type TeamStorage = {
+    load: (setTeam: Dispatch<TeamType>) => () => void,
+    store: (team: TeamType | undefined) => () => void,
+    remove: () => void,
 }
 
 const KEY = "team";
-export const LocalStorage = () => {
-    const loadTeam = (setTeam: Dispatch<TeamType>) => {
+export const TeamStorage = () => {
+    const load = (setTeam: Dispatch<TeamType>) => {
         return () => {
             const team = localStorage.getItem(KEY);
             if (team !== null && team !== "undefined") {
@@ -18,7 +18,7 @@ export const LocalStorage = () => {
         }
     };
 
-    const storeTeam = (team: TeamType | undefined) => {
+    const store = (team: TeamType | undefined) => {
         return () => {
             if (team !== undefined) {
                 window.localStorage.setItem(KEY, JSON.stringify(team))
@@ -26,13 +26,13 @@ export const LocalStorage = () => {
         }
     };
 
-    const removeTeam = () => {
+    const remove = () => {
         window.localStorage.removeItem(KEY)
     }
 
     return {
-        loadTeam,
-        storeTeam,
-        removeTeam,
-    } as StorageType;
+        load,
+        store,
+        remove,
+    } as TeamStorage;
 }
