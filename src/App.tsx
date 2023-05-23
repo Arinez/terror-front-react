@@ -22,11 +22,11 @@ function App({storage}: AppProps) {
 
     if (!team) {
         return (
-            <><LoginPage useTeam={setTeam} setLoading={setLoading}></LoginPage></>
+            <LoginPage useTeam={setTeam} setLoading={setLoading}/>
         )
     }
     if (team?.token !== "admin token") {
-        return (<TrackPage team={team} removeTeam={storage.removeTeam} onTeamChange={setTeam}></TrackPage> )
+        return (<TrackPage team={team} removeTeam={storage.removeTeam} onTeamChange={setTeam}/> )
     }
     return (<>
         <LogOut text={"Pa tu casa"} logout={logout({removeTeam : storage.removeTeam, onTeamChange : setTeam})}/>
