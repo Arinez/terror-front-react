@@ -1,4 +1,4 @@
-import {TeamType} from "./getTeamTokenMock.tsx";
+import {TeamType} from "./getTeamTokenMock.ts";
 
 interface LogoutParams {
     removeTeam: () => void

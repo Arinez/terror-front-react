@@ -1,5 +1,5 @@
 import {Dispatch} from "react";
-import {TeamType} from "./getTeamTokenMock.tsx";
+import {TeamType} from "./getTeamTokenMock.ts";
 
 export type StorageType = {
     loadTeam: (setTeam: Dispatch<TeamType>) => () => void,

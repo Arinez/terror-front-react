@@ -1,11 +1,11 @@
 import {FormEvent, useEffect, useState} from "react";
 import TextInput from "../../components/TextInput";
-import {CheckpointType, TeamType} from "../../services/getTeamTokenMock.tsx";
-import {getCurrentCheckpoint} from "../../services/getCurrentCheckpointMock.tsx";
-import {sendAnswer} from "../../services/sendAnswerMock.tsx";
+import {CheckpointType, TeamType} from "../../services/getTeamTokenMock.ts";
+import {getCurrentCheckpoint} from "../../services/getCurrentCheckpointMock.ts";
+import {sendAnswer} from "../../services/sendAnswerMock.ts";
 import Loading from "../../components/Loading.tsx";
 import LogOut from "../../components/LogOut.tsx";
-import {logout} from "../../services/logOut.tsx";
+import {logout} from "../../services/logOut.ts";
 
 const emptyCheckpoint: CheckpointType = {question: "", answer: ""};
 

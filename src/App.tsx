@@ -1,12 +1,12 @@
 import './App.css'
 import {LoginPage} from './pages/login/LoginPage.tsx'
-import {TeamType} from './services/getTeamTokenMock.tsx'
+import {TeamType} from './services/getTeamTokenMock.ts'
 import {useEffect, useState} from "react";
 import {TrackPage} from "./pages/track/TrackPage.tsx";
 import Loading from "./components/Loading.tsx";
-import {StorageType} from "./services/localStorage.tsx";
+import {StorageType} from "./services/localStorage.ts";
 import LogOut from "./components/LogOut.tsx";
-import {logout} from "./services/logOut.tsx";
+import {logout} from "./services/logOut.ts";
 
 type AppProps = {
     storage: StorageType,
