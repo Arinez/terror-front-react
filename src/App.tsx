@@ -15,7 +15,10 @@ function App({teamStorage}: AppProps) {
     const [team, setTeam] = useState<TeamType>()
     const [loading, setLoading] = useState<boolean>(false)
 
-    useEffect(teamStorage.load(setTeam), [])
+    useEffect( () => {
+        const teamFromStorage = teamStorage.load()
+        setTeam(teamFromStorage)
+    }, [])
     useEffect(teamStorage.store(team), [team])
 
     if (loading) return (<Loading text={"Cargando..."}/>)

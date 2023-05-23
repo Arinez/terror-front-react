@@ -1,21 +1,19 @@
-import {Dispatch} from "react";
 import {TeamType} from "./getTeamTokenMock.ts";
 
 export type TeamStorage = {
-    load: (setTeam: Dispatch<TeamType>) => () => void,
+    load: () => TeamType | undefined,
     store: (team: TeamType | undefined) => () => void,
     remove: () => void,
 }
 
 const KEY = "team";
 export const TeamStorage = () => {
-    const load = (setTeam: Dispatch<TeamType>) => {
-        return () => {
-            const team = localStorage.getItem(KEY);
-            if (team !== null && team !== "undefined") {
-                setTeam(JSON.parse(team))
-            }
+    const load = () => {
+        const team = localStorage.getItem(KEY);
+        if (team !== null && team !== "undefined") {
+            return JSON.parse(team) as TeamType
         }
+        return undefined
     };
 
     const store = (team: TeamType | undefined) => {
