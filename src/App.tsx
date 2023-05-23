@@ -32,7 +32,7 @@ function App({teamStorage}: AppProps) {
         return (<TrackPage team={team} removeTeam={teamStorage.remove} onTeamChange={setTeam}/> )
     }
     return (<>
-        <LogOut text={"Pa tu casa"} logout={logout({removeTeam : teamStorage.remove, onTeamChange : setTeam})}/>
+        <LogOut text={"Cerrar Sesión"} logout={logout({removeTeam : teamStorage.remove, onTeamChange : setTeam})}/>
         Logged in with: {team.token}
     </>)
 }

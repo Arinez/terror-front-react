@@ -40,7 +40,7 @@ export const TrackPage = ({team, onTeamChange, removeTeam}: TrackProps) => {
 
     return (
         <>
-            <LogOut text={"pa tu casa"} logout={logout({removeTeam : removeTeam, onTeamChange : onTeamChange})}/>
+            <LogOut text={"Cerrar Sesión"} logout={logout({removeTeam : removeTeam, onTeamChange : onTeamChange})}/>
             <div>
                 <form onSubmit={handleSubmit}>
                     <p>{checkpoint.question}</p>
