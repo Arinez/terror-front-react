@@ -42,8 +42,8 @@ function App({teamStorage, trackStorage}: AppProps) {
     return (<>
         <LogOut text={"Cerrar Sesión"} logout={
             logout({
-                removeTeam : teamStorage.remove,
-                onTeamChange : setTeam,
+                removeTeam: teamStorage.remove,
+                onTeamChange: setTeam,
                 removeTrack: () => undefined,
                 onTrackChange: () => undefined,
             })

@@ -2,6 +2,7 @@ import {Track} from "../types/Track.ts";
 import {Step} from "../types/Step.ts";
 import {Team} from "../types/Team.ts";
 
+// TODO: current step should also, come from the backend
 const responseMock = [
     {
         "id": 1,
