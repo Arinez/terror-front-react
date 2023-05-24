@@ -5,19 +5,15 @@ export type CheckpointType = {
     question: string;
     answer: string | undefined;
 }
-export const getCurrentCheckpoint = (track: TrackType): Promise<CheckpointType> => {
+export const getCurrentCheckpoint = (track: TrackType): CheckpointType => {
     console.log("get current checkpoint", track.currentStep)
-    return new Promise(resolve => {
-        const currentCheckpoint = track.steps.find(step => step.order === track.currentStep)?.checkpoint;
-        if (currentCheckpoint === undefined) resolve({
-            title: "Has terminado",
-            question: "Regresa al punto de partida",
-            answer: ""
-        });
-        else resolve({
-            title: currentCheckpoint?.title,
-            question: currentCheckpoint?.question,
-            answer: ""
-        })
-    });
+    const currentCheckpoint = track.steps.find(step => step.order === track.currentStep)?.checkpoint;
+    if (currentCheckpoint === undefined) {
+        return { title: "", question: "", answer: "" }
+    }
+    return {
+        title: currentCheckpoint?.title,
+        question: currentCheckpoint?.question,
+        answer: ""
+    }
 }

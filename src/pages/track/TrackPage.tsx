@@ -8,6 +8,7 @@ import LogOut from "../../components/LogOut.tsx";
 import {logout} from "../../services/logOut.ts";
 import {getTrack, TrackType} from "../../services/getTrackMock.ts";
 import {updateTrackStep} from "../../services/updateTrackStep.ts";
+import {isFinalCheckpoint} from "../../services/isFinalCheckpoint.ts";
 
 const emptyTrack: TrackType = {currentStep: 1, steps: []};
 
@@ -22,11 +23,13 @@ type TrackProps = {
     onTeamChange: (team: TeamType | undefined) => void,
     removeTeam: () => void,
 }
+
 export const TrackPage = ({team, onTeamChange, removeTeam}: TrackProps) => {
     const [answer, setAnswer] = useState("");
     const [checkpoint, setCheckpoint] = useState<CheckpointType>(emptyCheckpoint);
     const [track, setTrack] = useState<TrackType>(emptyTrack);
     const [loading, setLoading] = useState<boolean>(true);
+    const [final, setFinal] = useState<boolean>(false);
 
     // TODO: persist track in local storage
     useEffect(() => {
@@ -40,20 +43,27 @@ export const TrackPage = ({team, onTeamChange, removeTeam}: TrackProps) => {
     useEffect(() => {
         console.log("get current checkpoint use effect", track);
         setLoading(true);
-        getCurrentCheckpoint(track)
-            .then(setCheckpoint)
-            .catch(console.error)
-            .finally(() => setLoading(false));
+        const currentCheckpoint = getCurrentCheckpoint(track)
+        setCheckpoint(currentCheckpoint);
+        setLoading(false)
     }, [track]);
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault(); // Prevents the page from reloading
         setLoading(true);
         sendAnswer(team, answer);
-        setTrack(updateTrackStep(track));
+        if (isFinalCheckpoint(track)) setFinal(true);
+        else setTrack(updateTrackStep(track));
+        setLoading(false);
     }
 
     if (loading) return (<Loading text={"Cargando..."}/>)
+    if (final) return (
+        <>
+            <h1>¡Felicidades! Has terminado la carrera</h1>
+            <p>Regresa al punto de partida</p>
+        </>
+    )
 
     return (
         <>
