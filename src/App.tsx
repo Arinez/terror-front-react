@@ -7,11 +7,13 @@ import Loading from "./components/Loading.tsx";
 import {TeamStorage} from "./services/teamStorage.ts";
 import LogOut from "./components/LogOut.tsx";
 import {logout} from "./services/logOut.ts";
+import {TrackStorage} from "./services/trackStorage.ts";
 
 type AppProps = {
     teamStorage: TeamStorage,
+    trackStorage: TrackStorage,
 }
-function App({teamStorage}: AppProps) {
+function App({teamStorage, trackStorage}: AppProps) {
     const [team, setTeam] = useState<TeamType>()
     const [loading, setLoading] = useState<boolean>(false)
 
@@ -29,7 +31,12 @@ function App({teamStorage}: AppProps) {
         )
     }
     if (team?.token !== "admin token") {
-        return (<TrackPage team={team} removeTeam={teamStorage.remove} onTeamChange={setTeam}/> )
+        return (<TrackPage
+            team={team}
+            removeTeam={teamStorage.remove}
+            onTeamChange={setTeam}
+            storeTrack={trackStorage.store}
+        /> )
     }
     return (<>
         <LogOut text={"Cerrar Sesión"} logout={logout({removeTeam : teamStorage.remove, onTeamChange : setTeam})}/>

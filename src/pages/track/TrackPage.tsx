@@ -9,6 +9,7 @@ import {logout} from "../../services/logOut.ts";
 import {getTrack, TrackType} from "../../services/getTrackMock.ts";
 import {updateTrackStep} from "../../services/updateTrackStep.ts";
 import {isFinalCheckpoint} from "../../services/isFinalCheckpoint.ts";
+import {updateTrackAnswer} from "../../services/updateTrackAnswer.ts";
 
 const emptyTrack: TrackType = {currentStep: 1, steps: []};
 
@@ -22,9 +23,10 @@ type TrackProps = {
     team: TeamType,
     onTeamChange: (team: TeamType | undefined) => void,
     removeTeam: () => void,
+    storeTrack: (track: TrackType) => void,
 }
 
-export const TrackPage = ({team, onTeamChange, removeTeam}: TrackProps) => {
+export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack}: TrackProps) => {
     const [answer, setAnswer] = useState("");
     const [checkpoint, setCheckpoint] = useState<CheckpointType>(emptyCheckpoint);
     const [track, setTrack] = useState<TrackType>(emptyTrack);
@@ -43,6 +45,7 @@ export const TrackPage = ({team, onTeamChange, removeTeam}: TrackProps) => {
     useEffect(() => {
         console.log("get current checkpoint use effect", track);
         setLoading(true);
+        storeTrack(track);
         const currentCheckpoint = getCurrentCheckpoint(track)
         setCheckpoint(currentCheckpoint);
         setLoading(false)
@@ -52,14 +55,17 @@ export const TrackPage = ({team, onTeamChange, removeTeam}: TrackProps) => {
         e.preventDefault(); // Prevents the page from reloading
         setLoading(true);
         sendAnswer(team, answer);
+        let newTrack = updateTrackAnswer(track, answer);
         if (isFinalCheckpoint(track)) setFinal(true);
-        else setTrack(updateTrackStep(track));
+        else newTrack = updateTrackStep(newTrack);
+        setTrack(newTrack)
         setLoading(false);
     }
 
     if (loading) return (<Loading text={"Cargando..."}/>)
     if (final) return (
         <>
+            <LogOut text={"Cerrar Sesión"} logout={logout({removeTeam: removeTeam, onTeamChange: onTeamChange})}/>
             <h1>¡Felicidades! Has terminado la carrera</h1>
             <p>Regresa al punto de partida</p>
         </>
