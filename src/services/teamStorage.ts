@@ -1,8 +1,8 @@
-import {TeamType} from "./getTeamTokenMock.ts";
+import {Team} from "../types/Team.ts";
 
 export type TeamStorage = {
-    load: () => TeamType | undefined,
-    store: (team: TeamType | undefined) => () => void,
+    load: () => Team | undefined,
+    store: (team: Team | undefined) => () => void,
     remove: () => void,
 }
 
@@ -11,12 +11,12 @@ export const TeamStorage = () => {
     const load = () => {
         const team = localStorage.getItem(KEY);
         if (team !== null && team !== "undefined") {
-            return JSON.parse(team) as TeamType
+            return JSON.parse(team) as Team
         }
         return undefined
     };
 
-    const store = (team: TeamType | undefined) => {
+    const store = (team: Team | undefined) => {
         return () => {
             if (team !== undefined) {
                 window.localStorage.setItem(KEY, JSON.stringify(team))

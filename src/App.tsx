@@ -1,6 +1,5 @@
 import './App.css'
 import {LoginPage} from './pages/login/LoginPage.tsx'
-import {TeamType} from './services/getTeamTokenMock.ts'
 import {useEffect, useState} from "react";
 import {TrackPage} from "./pages/track/TrackPage.tsx";
 import Loading from "./components/Loading.tsx";
@@ -8,13 +7,14 @@ import {TeamStorage} from "./services/teamStorage.ts";
 import LogOut from "./components/LogOut.tsx";
 import {logout} from "./services/logOut.ts";
 import {TrackStorage} from "./services/trackStorage.ts";
+import {Team} from "./types/Team.ts";
 
 type AppProps = {
     teamStorage: TeamStorage,
     trackStorage: TrackStorage,
 }
 function App({teamStorage, trackStorage}: AppProps) {
-    const [team, setTeam] = useState<TeamType>()
+    const [team, setTeam] = useState<Team>()
     const [loading, setLoading] = useState<boolean>(false)
 
     useEffect( () => {

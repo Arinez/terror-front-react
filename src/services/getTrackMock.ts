@@ -1,16 +1,6 @@
-import {TeamType} from "./getTeamTokenMock.ts";
-import {CheckpointType} from "./getCurrentCheckpointMock.ts";
-
-export type StepType = {
-    id: number;
-    order: number;
-    checkpoint: CheckpointType
-}
-
-export type TrackType = {
-    currentStep: number;
-    steps: StepType[];
-}
+import {Track} from "../types/Track.ts";
+import {Step} from "../types/Step.ts";
+import {Team} from "../types/Team.ts";
 
 const responseMock = [
     {
@@ -42,7 +32,7 @@ const responseMock = [
     }
 ]
 
-export const getTrack = (team: TeamType): Promise<TrackType> => {
+export const getTrack = (team: Team): Promise<Track> => {
     console.log("get track", team.token);
     return new Promise(resolve => {
         setTimeout(() => {
@@ -55,7 +45,7 @@ export const getTrack = (team: TeamType): Promise<TrackType> => {
     });
 }
 
-const mapToStep = (step: any): StepType => {
+const mapToStep = (step: any): Step => {
     return {
         id: step.id,
         order: step.step,
