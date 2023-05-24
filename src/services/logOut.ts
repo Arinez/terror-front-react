@@ -1,11 +1,11 @@
-import {TeamType} from "./getTeamTokenMock.ts";
-import {TrackType} from "./getTrackMock.ts";
+import {Track} from "../types/Track.ts";
+import {Team} from "../types/Team.ts";
 
 interface LogoutParams {
     removeTeam: () => void;
-    onTeamChange: (team: TeamType | undefined) => void;
+    onTeamChange: (team: Team | undefined) => void;
     removeTrack: () => void;
-    onTrackChange: (track: TrackType | undefined) => void;
+    onTrackChange: (track: Track | undefined) => void;
 }
 
 export const logout = ({removeTeam, onTeamChange, removeTrack, onTrackChange}: LogoutParams) => {

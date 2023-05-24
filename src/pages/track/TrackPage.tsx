@@ -1,36 +1,38 @@
 import {FormEvent, useEffect, useState} from "react";
 import TextInput from "../../components/TextInput";
-import {TeamType} from "../../services/getTeamTokenMock.ts";
-import {CheckpointType, getCurrentCheckpoint} from "../../services/getCurrentCheckpointMock.ts";
+import {getCurrentCheckpoint} from "../../services/getCurrentCheckpointMock.ts";
 import {sendAnswer} from "../../services/sendAnswerMock.ts";
 import Loading from "../../components/Loading.tsx";
 import LogOut from "../../components/LogOut.tsx";
 import {logout} from "../../services/logOut.ts";
-import {getTrack, TrackType} from "../../services/getTrackMock.ts";
+import {getTrack} from "../../services/getTrackMock.ts";
 import {updateTrackStep} from "../../services/updateTrackStep.ts";
 import {isFinalCheckpoint} from "../../services/isFinalCheckpoint.ts";
 import {updateTrackAnswer} from "../../services/updateTrackAnswer.ts";
+import {Track} from "../../types/Track.ts";
+import {Checkpoint} from "../../types/Checkpoint.ts";
+import {Team} from "../../types/Team.ts";
 
-const emptyTrack: TrackType = {currentStep: 1, steps: []};
+const emptyTrack: Track = {currentStep: 1, steps: []};
 
-const emptyCheckpoint: CheckpointType = {
+const emptyCheckpoint: Checkpoint = {
     title: "",
     question: "",
     answer: ""
 };
 
 type TrackProps = {
-    team: TeamType,
-    onTeamChange: (team: TeamType | undefined) => void,
+    team: Team,
+    onTeamChange: (team: Team | undefined) => void,
     removeTeam: () => void,
-    storeTrack: (track: TrackType) => void,
+    storeTrack: (track: Track) => void,
     removeTrack: () => void,
 }
 
 export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTrack}: TrackProps) => {
     const [answer, setAnswer] = useState("");
-    const [checkpoint, setCheckpoint] = useState<CheckpointType>(emptyCheckpoint);
-    const [track, setTrack] = useState<TrackType>(emptyTrack);
+    const [checkpoint, setCheckpoint] = useState<Checkpoint>(emptyCheckpoint);
+    const [track, setTrack] = useState<Track>(emptyTrack);
     const [loading, setLoading] = useState<boolean>(true);
     const [final, setFinal] = useState<boolean>(false);
 

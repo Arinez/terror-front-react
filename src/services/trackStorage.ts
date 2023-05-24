@@ -1,8 +1,8 @@
-import {TrackType} from "./getTrackMock.ts";
+import {Track} from "../types/Track.ts";
 
 export type TrackStorage = {
-    load: () => TrackType | undefined,
-    store: (track: TrackType | undefined) => () => void,
+    load: () => Track | undefined,
+    store: (track: Track | undefined) => () => void,
     remove: () => void,
 }
 const KEY = "track";
@@ -15,7 +15,7 @@ export const TrackStorage = {
         }
         return undefined;
     },
-    store: (track: TrackType | undefined) => {
+    store: (track: Track | undefined) => {
         console.log("store track", track)
         if (track !== undefined) {
             window.localStorage.setItem(KEY, JSON.stringify(track));

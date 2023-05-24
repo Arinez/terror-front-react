@@ -1,11 +1,7 @@
-import {TrackType} from "./getTrackMock.ts";
+import {Track} from "../types/Track.ts";
+import {Checkpoint} from "../types/Checkpoint.ts";
 
-export type CheckpointType = {
-    title: string;
-    question: string;
-    answer: string | undefined;
-}
-export const getCurrentCheckpoint = (track: TrackType): CheckpointType => {
+export const getCurrentCheckpoint = (track: Track): Checkpoint => {
     console.log("get current checkpoint", track.currentStep)
     const currentCheckpoint = track.steps.find(step => step.order === track.currentStep)?.checkpoint;
     if (currentCheckpoint === undefined) {
