@@ -1,22 +1,19 @@
-import {CheckpointType, TeamType} from "./getTeamTokenMock.ts";
+import {TrackType} from "./getTrackMock.ts";
 
-const questions: string[] = [
-  "¿Cuál es el nombre de la primera persona que llegó a la luna?",
-  "¿Como se llama el primer perro en el espacio?",
-  "¿Donde se encuentra el centro de control de la NASA?",
-  "¿Cuantos planetas hay en el sistema solar?",
-];
-
-let currentQuestion = 0;
-export const getCurrentCheckpoint = (team: TeamType): Promise<CheckpointType> => {
-    console.log("get current checkpoint", team.leader);
-    if (currentQuestion >= questions.length) currentQuestion = 0;
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve({
-                question: questions[currentQuestion++],
-                answer: ""
-            })
-        }, 2000);
-    });
+export type CheckpointType = {
+    title: string;
+    question: string;
+    answer: string | undefined;
+}
+export const getCurrentCheckpoint = (track: TrackType): CheckpointType => {
+    console.log("get current checkpoint", track.currentStep)
+    const currentCheckpoint = track.steps.find(step => step.order === track.currentStep)?.checkpoint;
+    if (currentCheckpoint === undefined) {
+        return { title: "", question: "", answer: "" }
+    }
+    return {
+        title: currentCheckpoint?.title,
+        question: currentCheckpoint?.question,
+        answer: ""
+    }
 }
