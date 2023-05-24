@@ -24,9 +24,10 @@ type TrackProps = {
     onTeamChange: (team: TeamType | undefined) => void,
     removeTeam: () => void,
     storeTrack: (track: TrackType) => void,
+    removeTrack: () => void,
 }
 
-export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack}: TrackProps) => {
+export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTrack}: TrackProps) => {
     const [answer, setAnswer] = useState("");
     const [checkpoint, setCheckpoint] = useState<CheckpointType>(emptyCheckpoint);
     const [track, setTrack] = useState<TrackType>(emptyTrack);
@@ -65,7 +66,14 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack}: TrackPro
     if (loading) return (<Loading text={"Cargando..."}/>)
     if (final) return (
         <>
-            <LogOut text={"Cerrar Sesión"} logout={logout({removeTeam: removeTeam, onTeamChange: onTeamChange})}/>
+            <LogOut text={"Cerrar Sesión"} logout={
+                logout({
+                    removeTeam: removeTeam,
+                    onTeamChange: onTeamChange,
+                    removeTrack: removeTrack,
+                    onTrackChange: setTrack
+                })
+            }/>
             <h1>¡Felicidades! Has terminado la carrera</h1>
             <p>Regresa al punto de partida</p>
         </>
@@ -73,7 +81,14 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack}: TrackPro
 
     return (
         <>
-            <LogOut text={"Cerrar Sesión"} logout={logout({removeTeam: removeTeam, onTeamChange: onTeamChange})}/>
+            <LogOut text={"Cerrar Sesión"} logout={
+                logout({
+                    removeTeam: removeTeam,
+                    onTeamChange: onTeamChange,
+                    removeTrack: removeTrack,
+                    onTrackChange: setTrack
+                })
+            }/>
             <h1>{checkpoint.title}</h1>
             <p>{checkpoint.question}</p>
             <form onSubmit={handleSubmit}>

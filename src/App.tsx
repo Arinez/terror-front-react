@@ -36,10 +36,18 @@ function App({teamStorage, trackStorage}: AppProps) {
             removeTeam={teamStorage.remove}
             onTeamChange={setTeam}
             storeTrack={trackStorage.store}
+            removeTrack={trackStorage.remove}
         /> )
     }
     return (<>
-        <LogOut text={"Cerrar Sesión"} logout={logout({removeTeam : teamStorage.remove, onTeamChange : setTeam})}/>
+        <LogOut text={"Cerrar Sesión"} logout={
+            logout({
+                removeTeam : teamStorage.remove,
+                onTeamChange : setTeam,
+                removeTrack: () => undefined,
+                onTrackChange: () => undefined,
+            })
+        }/>
         Logged in with: {team.token}
     </>)
 }
