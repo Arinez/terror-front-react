@@ -5,7 +5,7 @@ import {sendAnswer} from "../../services/sendAnswerMock.ts";
 import Loading from "../../components/Loading.tsx";
 import LogOut from "../../components/LogOut.tsx";
 import {logout} from "../../services/logOut.ts";
-import {getTrack} from "../../services/getTrackMock.ts";
+import {getTrack} from "../../services/getTrack.ts";
 import {updateTrackStep} from "../../services/updateTrackStep.ts";
 import {isFinalCheckpoint} from "../../services/isFinalCheckpoint.ts";
 import {updateTrackAnswer} from "../../services/updateTrackAnswer.ts";
@@ -36,7 +36,6 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
     const [loading, setLoading] = useState<boolean>(true);
     const [final, setFinal] = useState<boolean>(false);
 
-    // TODO: persist track in local storage
     useEffect(() => {
         console.log("get track use effect");
         getTrack(team)

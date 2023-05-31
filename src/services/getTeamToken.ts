@@ -18,11 +18,8 @@ export const getTeamToken = (leader: string, password: string): Promise<Team> =>
 
     return new Promise((resolve, reject) => {
         fetch(url, {...requestOptions, body})
-            .then(response => response.text())
-            .then(response => {
-                const token = JSON.parse(response).access_token;
-                resolve({leader, token})
-            })
+            .then(response => response.json())
+            .then(response => resolve({leader, token: response.access_token}))
             .catch(reject)
     })
 }
