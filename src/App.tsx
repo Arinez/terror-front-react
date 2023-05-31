@@ -39,6 +39,7 @@ function App({teamStorage, trackStorage}: AppProps) {
             removeTrack={trackStorage.remove}
         /> )
     }
+    // TODO: add something to show error
     return (<>
         <LogOut text={"Cerrar Sesión"} logout={
             logout({

@@ -1,11 +1,11 @@
 import {FormEvent, useEffect, useState} from "react";
 import TextInput from "../../components/TextInput";
-import {getCurrentCheckpoint} from "../../services/getCurrentCheckpointMock.ts";
-import {sendAnswer} from "../../services/sendAnswerMock.ts";
+import {getCurrentCheckpoint} from "../../services/getCurrentCheckpoint.ts";
+import {sendAnswer} from "../../services/sendAnswer.ts";
 import Loading from "../../components/Loading.tsx";
 import LogOut from "../../components/LogOut.tsx";
 import {logout} from "../../services/logOut.ts";
-import {getTrack} from "../../services/getTrackMock.ts";
+import {getTrack} from "../../services/getTrack.ts";
 import {updateTrackStep} from "../../services/updateTrackStep.ts";
 import {isFinalCheckpoint} from "../../services/isFinalCheckpoint.ts";
 import {updateTrackAnswer} from "../../services/updateTrackAnswer.ts";
@@ -36,7 +36,6 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
     const [loading, setLoading] = useState<boolean>(true);
     const [final, setFinal] = useState<boolean>(false);
 
-    // TODO: persist track in local storage
     useEffect(() => {
         console.log("get track use effect");
         getTrack(team)
@@ -57,11 +56,14 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
     function handleSubmit(e: FormEvent) {
         e.preventDefault(); // Prevents the page from reloading
         setLoading(true);
-        sendAnswer(team, answer);
         let newTrack = updateTrackAnswer(track, answer);
         if (isFinalCheckpoint(track)) setFinal(true);
-        else newTrack = updateTrackStep(newTrack);
+        else {
+            newTrack = updateTrackStep(newTrack);
+            sendAnswer(team, answer, track.steps[track.currentStep].id);
+        }
         setTrack(newTrack)
+        // TODO: remove previous answer
         setLoading(false);
     }
 
