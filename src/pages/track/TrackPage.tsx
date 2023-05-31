@@ -1,7 +1,7 @@
 import {FormEvent, useEffect, useState} from "react";
 import TextInput from "../../components/TextInput";
 import {getCurrentCheckpoint} from "../../services/getCurrentCheckpoint.ts";
-import {sendAnswer} from "../../services/sendAnswerMock.ts";
+import {sendAnswer} from "../../services/sendAnswer.ts";
 import Loading from "../../components/Loading.tsx";
 import LogOut from "../../components/LogOut.tsx";
 import {logout} from "../../services/logOut.ts";
@@ -56,7 +56,7 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
     function handleSubmit(e: FormEvent) {
         e.preventDefault(); // Prevents the page from reloading
         setLoading(true);
-        sendAnswer(team, answer);
+        sendAnswer(team, answer, track.steps[track.currentStep].id);
         let newTrack = updateTrackAnswer(track, answer);
         if (isFinalCheckpoint(track)) setFinal(true);
         else newTrack = updateTrackStep(newTrack);

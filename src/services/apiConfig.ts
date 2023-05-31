@@ -12,3 +12,14 @@ export const getTrackRequestOptions = (team: Team) => {
         }
     }
 }
+export const getSendAnswerUrl = () => `${HOST}/team/tracking`
+
+export const getSendAnswerRequestOptions = (team: Team) => {
+    return {
+        method: "post",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + team.token
+        },
+    }
+}
