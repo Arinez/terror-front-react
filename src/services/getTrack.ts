@@ -27,6 +27,8 @@ const mapToStep = (step: any): Step => {
             title: step.checkpoint.name,
             question: step.checkpoint.question,
             answer: "",
+            // TODO: add image
+            // TODO: add virtual
         }
     }
 }

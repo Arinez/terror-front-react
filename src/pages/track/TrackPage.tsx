@@ -1,6 +1,6 @@
 import {FormEvent, useEffect, useState} from "react";
 import TextInput from "../../components/TextInput";
-import {getCurrentCheckpoint} from "../../services/getCurrentCheckpointMock.ts";
+import {getCurrentCheckpoint} from "../../services/getCurrentCheckpoint.ts";
 import {sendAnswer} from "../../services/sendAnswerMock.ts";
 import Loading from "../../components/Loading.tsx";
 import LogOut from "../../components/LogOut.tsx";
