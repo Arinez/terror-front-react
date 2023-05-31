@@ -9,7 +9,6 @@ export const sendAnswer = async (team: Team, answer: string, checkpointId: numbe
         "tracking_id": checkpointId.toString(),
         "team_answer": answer,
     })
-    console.log("Sending answer", body)
 
     let pending = true;
     while (pending) {

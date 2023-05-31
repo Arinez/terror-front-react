@@ -56,11 +56,14 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
     function handleSubmit(e: FormEvent) {
         e.preventDefault(); // Prevents the page from reloading
         setLoading(true);
-        sendAnswer(team, answer, track.steps[track.currentStep].id);
         let newTrack = updateTrackAnswer(track, answer);
         if (isFinalCheckpoint(track)) setFinal(true);
-        else newTrack = updateTrackStep(newTrack);
+        else {
+            newTrack = updateTrackStep(newTrack);
+            sendAnswer(team, answer, track.steps[track.currentStep].id);
+        }
         setTrack(newTrack)
+        // TODO: remove previous answer
         setLoading(false);
     }
 
