@@ -1,7 +1,6 @@
 import {Team} from "../types/Team.ts";
+import {getLoginUrl} from "./apiConfig.ts";
 
-export const HOST = "https://terrorapi.xn--ariez-qta.com/api"
-const getLoginUrl = () => `${HOST}/team/login`
 const requestOptions = {
     method: "post",
     headers: {
