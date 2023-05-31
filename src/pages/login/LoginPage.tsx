@@ -16,11 +16,9 @@ export const LoginPage = ({useTeam, setLoading}: LoginPageProps) => {
         e.preventDefault(); // Prevents the page from reloading
         setLoading(true);
         getTeamToken(leader, password)
-            .then(response => {
-                if (response.token !== "incorrect") {
-                    useTeam(response); // FIXME: React Hook "useTeam" cannot be called inside a callback.
-                }else {
-                    console.error("Credentials incorrect");
+            .then(team => {
+                if (team.token !== undefined && team.token !== "incorrect") {
+                    useTeam(team); // FIXME: React Hook "useTeam" cannot be called inside a callback.
                 }
             })
             .catch(console.error)
