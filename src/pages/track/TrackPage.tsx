@@ -4,8 +4,6 @@ import TextInput from "../../components/TextInput";
 import {getCurrentCheckpoint} from "../../services/getCurrentCheckpoint.ts";
 import {sendAnswer} from "../../services/sendAnswer.ts";
 import Loading from "../../components/Loading.tsx";
-import LogOut from "../../components/LogOut.tsx";
-import {logout} from "../../services/logOut.ts";
 import {getTrack} from "../../services/getTrack.ts";
 import {updateTrackStep} from "../../services/updateTrackStep.ts";
 import {isFinalCheckpoint} from "../../services/isFinalCheckpoint.ts";
@@ -23,14 +21,11 @@ const emptyCheckpoint: Checkpoint = {
 };
 
 type TrackProps = {
-    team: Team,
-    onTeamChange: (team: Team | undefined) => void,
-    removeTeam: () => void,
+    team: Team
     storeTrack: (track: Track) => void,
-    removeTrack: () => void,
 }
 
-export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTrack}: TrackProps) => {
+export const TrackPage = ({team, storeTrack}: TrackProps) => {
     const [answer, setAnswer] = useState("");
     const [checkpoint, setCheckpoint] = useState<Checkpoint>(emptyCheckpoint);
     const [track, setTrack] = useState<Track>(emptyTrack);
@@ -69,14 +64,6 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
     if (loading) return (<Loading text={"Cargando..."}/>)
     if (final) return (
         <>
-            <LogOut text={"Cerrar Sesión"} logout={
-                logout({
-                    removeTeam: removeTeam,
-                    onTeamChange: onTeamChange,
-                    removeTrack: removeTrack,
-                    onTrackChange: setTrack
-                })
-            }/>
             <h1>¡Felicidades! Has terminado la carrera</h1>
             <p>Regresa al punto de partida</p>
         </>
@@ -84,14 +71,6 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
 
     return (
         <>
-            <LogOut text={"Cerrar Sesión"} logout={
-                logout({
-                    removeTeam: removeTeam,
-                    onTeamChange: onTeamChange,
-                    removeTrack: removeTrack,
-                    onTrackChange: setTrack
-                })
-            }/>
             <h1>{checkpoint.title}</h1>
             <p>{checkpoint.question}</p>
             <form onSubmit={handleSubmit}>
