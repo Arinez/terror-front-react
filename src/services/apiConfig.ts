@@ -23,3 +23,15 @@ export const getSendAnswerRequestOptions = (team: Team) => {
         },
     }
 }
+
+export const getCurrentStepUrl = () => `${HOST}/team/step`
+
+export const getCurrentStepRequestOptions = (team: Team) => {
+    return {
+        method: "get",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + team.token
+        },
+    }
+}
