@@ -1,7 +1,9 @@
+import "./LogingPage.css";
 import {Dispatch, FormEvent, useState} from "react";
 import TextInput from "../../components/TextInput";
 import {getTeamToken} from "../../services/getTeamToken.ts";
 import {Team} from "../../types/Team.ts";
+import PasswordInput from "../../components/PasswordInput.tsx";
 
 type LoginPageProps = {
     useTeam: Dispatch<Team>,
@@ -29,7 +31,10 @@ export const LoginPage = ({useTeam, setLoading}: LoginPageProps) => {
         <div>
             <form onSubmit={handleSubmit}>
                 <TextInput id="leader" placeholder="Capitan" onChange={setLeader}/>
-                <TextInput id="password" placeholder="Codigo" onChange={setPassword}/>
+                <br/>
+                {/* TODO: change for type password */}
+                <PasswordInput id="password" placeholder="Codigo" onChange={setPassword}/>
+                <br/>
                 <button type="submit">Enviar</button>
             </form>
         </div>
