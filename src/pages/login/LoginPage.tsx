@@ -32,7 +32,6 @@ export const LoginPage = ({useTeam, setLoading}: LoginPageProps) => {
             <form onSubmit={handleSubmit}>
                 <TextInput id="leader" placeholder="Capitan" onChange={setLeader}/>
                 <br/>
-                {/* TODO: change for type password */}
                 <PasswordInput id="password" placeholder="Codigo" onChange={setPassword}/>
                 <br/>
                 <button type="submit">Enviar</button>
