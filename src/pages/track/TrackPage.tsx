@@ -42,6 +42,7 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
     useEffect(() => {
         setLoading(true);
         storeTrack(track);
+        if (isFinalCheckpoint(track)) setFinal(true);
         const currentCheckpoint = getCurrentCheckpoint(track)
         setCheckpoint(currentCheckpoint);
         setLoading(false)
