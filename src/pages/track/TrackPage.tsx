@@ -1,3 +1,4 @@
+import "./TrackPage.css";
 import {FormEvent, useEffect, useState} from "react";
 import TextInput from "../../components/TextInput";
 import {getCurrentCheckpoint} from "../../services/getCurrentCheckpoint.ts";
@@ -37,7 +38,6 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
     const [final, setFinal] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log("get track use effect");
         getTrack(team)
             .then(setTrack)
             .catch(console.error)
@@ -45,7 +45,6 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
     }, []);
 
     useEffect(() => {
-        console.log("get current checkpoint use effect", track);
         setLoading(true);
         storeTrack(track);
         const currentCheckpoint = getCurrentCheckpoint(track)
@@ -55,6 +54,7 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault(); // Prevents the page from reloading
+        if (answer.length !== 4) return; // TODO: Show error message
         setLoading(true);
         let newTrack = updateTrackAnswer(track, answer);
         if (isFinalCheckpoint(track)) setFinal(true);
@@ -63,7 +63,6 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
             sendAnswer(team, answer, track.steps[track.currentStep].id);
         }
         setTrack(newTrack)
-        // TODO: remove previous answer
         setLoading(false);
     }
 
@@ -96,7 +95,7 @@ export const TrackPage = ({team, onTeamChange, removeTeam, storeTrack, removeTra
             <h1>{checkpoint.title}</h1>
             <p>{checkpoint.question}</p>
             <form onSubmit={handleSubmit}>
-                <TextInput id="answer" placeholder="----" onChange={setAnswer}/>
+                <TextInput id="answer" placeholder="- - - -" onChange={setAnswer} maxLength={4}/>
                 <br/>
                 <button type="submit">Enviar</button>
             </form>
