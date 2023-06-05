@@ -30,13 +30,11 @@ function App({teamStorage, trackStorage}: AppProps) {
             <LoginPage useTeam={setTeam} setLoading={setLoading}/>
         )
     }
+
     if (team?.token !== "admin token") {
         return (<TrackPage
             team={team}
-            removeTeam={teamStorage.remove}
-            onTeamChange={setTeam}
             storeTrack={trackStorage.store}
-            removeTrack={trackStorage.remove}
         /> )
     }
     return (<>
@@ -48,7 +46,7 @@ function App({teamStorage, trackStorage}: AppProps) {
                 onTrackChange: () => undefined,
             })
         }/>
-        Logged in with: {team.token}
+        Logged as: {team.leader}
     </>)
 }
 
