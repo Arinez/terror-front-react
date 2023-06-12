@@ -33,7 +33,7 @@ const mapToStep = (step: any): Step => {
             title: step.checkpoint.name,
             question: step.checkpoint.question,
             answer: "",
-            answerType: step.checkpoint.answerType,
+            answerType: step.checkpoint.answer_type,
             images: step.images.map((image: { image: string }) => image.image),
         }
     }

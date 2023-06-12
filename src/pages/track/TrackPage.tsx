@@ -34,6 +34,8 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [final, setFinal] = useState<boolean>(false);
 
+    // TODO: this loads from the server all the data on every render but it should do it?
+    // TODO: this should be done after the login
     useEffect(() => {
         getTrack(team)
             .then(setTrack)
