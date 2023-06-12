@@ -56,7 +56,7 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault(); // Prevents the page from reloading
-        if (answer.length !== 4) return; // TODO: Show error message
+        if (answer.length !== 4) return; // TODO: Show error message, this is not always 4
         setLoading(true);
         let newTrack = updateTrackAnswer(track, answer);
         if (!isFinalCheckpoint(track)) {

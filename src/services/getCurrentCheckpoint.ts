@@ -7,10 +7,10 @@ export const getCurrentCheckpoint = (track: Track): Checkpoint => {
         return {answerType: "", images: [], title: "", question: "", answer: "" }
     }
     return {
-        title: currentCheckpoint?.title,
-        question: currentCheckpoint?.question,
+        title: currentCheckpoint.title,
+        question: currentCheckpoint.question,
         answer: "",
-        answerType: currentCheckpoint?.answerType,
-        images: currentCheckpoint?.images
+        answerType: currentCheckpoint.answerType,
+        images: currentCheckpoint.images
     }
 }
