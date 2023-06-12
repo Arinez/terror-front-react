@@ -79,7 +79,7 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
         <>
             <h1>{checkpoint.title}</h1>
             <p>{checkpoint.question}</p>
-            {checkpoint.images.length > 0 && <p>tiene imagenes</p>}
+            { checkpoint.images.length > 0 && checkpoint.images.map(image => <img src={image}/> ) }
             <form onSubmit={handleSubmit}>
                 <TextInput id="answer" placeholder="- - - -" onChange={setAnswer} maxLength={4}/>
                 <br/>
