@@ -12,12 +12,14 @@ import {Track} from "../../types/Track.ts";
 import {Checkpoint} from "../../types/Checkpoint.ts";
 import {Team} from "../../types/Team.ts";
 
-const emptyTrack: Track = {currentStep: 1, steps: []};
+const emptyTrack: Track = {currentStep: -1, steps: []}; // FIXME: -1 is a hack to avoid showing the final screen message
 
 const emptyCheckpoint: Checkpoint = {
     title: "",
     question: "",
-    answer: ""
+    answer: "",
+    answerType: "",
+    images: [],
 };
 
 type TrackProps = {
@@ -42,10 +44,14 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
     useEffect(() => {
         setLoading(true);
         storeTrack(track);
-        if (isFinalCheckpoint(track)) setFinal(true);
         const currentCheckpoint = getCurrentCheckpoint(track)
         setCheckpoint(currentCheckpoint);
         setLoading(false)
+    }, [track]);
+
+    useEffect(() => {
+        if (isFinalCheckpoint(track)) setFinal(true);
+        else setFinal(false);
     }, [track]);
 
     function handleSubmit(e: FormEvent) {
@@ -53,8 +59,7 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
         if (answer.length !== 4) return; // TODO: Show error message
         setLoading(true);
         let newTrack = updateTrackAnswer(track, answer);
-        if (isFinalCheckpoint(track)) setFinal(true);
-        else {
+        if (!isFinalCheckpoint(track)) {
             newTrack = updateTrackStep(newTrack);
             sendAnswer(team, answer, track.steps[track.currentStep].id);
         }
@@ -74,6 +79,7 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
         <>
             <h1>{checkpoint.title}</h1>
             <p>{checkpoint.question}</p>
+            {checkpoint.images.length > 0 && <p>tiene imagenes</p>}
             <form onSubmit={handleSubmit}>
                 <TextInput id="answer" placeholder="- - - -" onChange={setAnswer} maxLength={4}/>
                 <br/>
