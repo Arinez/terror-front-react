@@ -17,7 +17,7 @@ export const LoginPage = ({useTeam, setLoading}: LoginPageProps) => {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault(); // Prevents the page from reloading
         setLoading(true);
-        getTeamToken(leader, password)
+        getTeamToken(leader.toLowerCase(), password)
             .then(team => {
                 if (team.token !== undefined && team.token !== "incorrect") {
                     useTeam(team); // FIXME: React Hook "useTeam" cannot be called inside a callback.
