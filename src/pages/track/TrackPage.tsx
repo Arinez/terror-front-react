@@ -1,6 +1,5 @@
 import "./TrackPage.css";
-import {FormEvent, useEffect, useState} from "react";
-import TextInput from "../../components/TextInput";
+import {useEffect, useState} from "react";
 import {getCurrentCheckpoint} from "../../services/getCurrentCheckpoint.ts";
 import {sendAnswer} from "../../services/sendAnswer.ts";
 import Loading from "../../components/Loading.tsx";
@@ -11,7 +10,9 @@ import {updateTrackAnswer} from "../../services/updateTrackAnswer.ts";
 import {Track} from "../../types/Track.ts";
 import {Checkpoint} from "../../types/Checkpoint.ts";
 import {Team} from "../../types/Team.ts";
-import CodeInput from "../../components/CodeInput.tsx";
+import QuestionOption from "../../components/QuestionOption.tsx";
+import QuestionCode from "../../components/QuestionCode.tsx";
+import QuestionText from "../../components/QuestionText.tsx";
 
 const emptyTrack: Track = {currentStep: -1, steps: []}; // FIXME: -1 is a hack to avoid showing the final screen message
 
@@ -29,8 +30,6 @@ type TrackProps = {
 }
 
 export const TrackPage = ({team, storeTrack}: TrackProps) => {
-    // TODO: everytime the answer changes the page is rendered again, this is not good
-    const [answer, setAnswer] = useState("");
     const [checkpoint, setCheckpoint] = useState<Checkpoint>(emptyCheckpoint);
     const [track, setTrack] = useState<Track>(emptyTrack);
     const [loading, setLoading] = useState<boolean>(true);
@@ -60,25 +59,8 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
         else setFinal(false);
     }, [track]);
 
-    function handleSubmit(e: FormEvent) {
-        e.preventDefault(); // Prevents the page from reloading
-        sendAnswerComponent(answer)
-    }
-
-    if (loading) return (<Loading text={"Cargando..."}/>)
-    if (final) return (
-        <>
-            <h1>¡Felicidades! Has terminado la carrera</h1>
-            <p>Regresa al punto de partida</p>
-        </>
-    )
-
-    // TODO: rename this function and parameter
+    // TODO: rename this function
     function sendAnswerComponent(answerComponent: string) {
-        if (answerComponent.length < 4) {
-            console.error("Answer is not 4 characters long")
-            return;
-        } // TODO: Show error message, this is not always 4
         setLoading(true);
         let newTrack = updateTrackAnswer(track, answerComponent);
         if (!isFinalCheckpoint(track)) {
@@ -87,55 +69,23 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
             sendAnswer(team, answerComponent, checkpointId);
         }
         setTrack(newTrack)
-        setAnswer("")
         setLoading(false);
     }
 
-    function sendOption(e: FormEvent) {
-        e.preventDefault(); // Prevents the page from reloading
-        if (!document.querySelector('input[name="answer"]:checked')) return; // TODO: Show error message, answer not selected
-        const answer = (document.querySelector('input[name="answer"]:checked') as HTMLInputElement).value;
-        sendAnswerComponent(answer)
-    }
+    if (loading) return (<Loading text={"Cargando..."}/>)
 
-    if (checkpoint.answerType === "OPTION") return (
+    if (final) return (
         <>
-            <h1>{checkpoint.title}</h1>
-            {checkpoint.images.length > 0 && checkpoint.images.map(image => <img src={image}/>)}
-            <form onSubmit={sendOption}>
-                { checkpoint.question.split("|").map(line => {
-                    return (
-                        <>
-                            <input
-                                type="radio"
-                                value={line}
-                                id={line}
-                                name="answer"
-                            />
-                            <label htmlFor={line}>{line}</label>
-                            <br/>
-                        </>
-                    );
-                }) }
-                <br/>
-                <button type="submit">Enviar</button>
-            </form>
+            <h1>¡Felicidades! Has terminado la carrera</h1>
+            <p>Regresa al punto de partida</p>
         </>
-    );
+    )
 
-    // TODO: split all this logic into components
     return (
         <>
-            <h1>{checkpoint.answerType != "TEXT" && checkpoint.title}</h1>
-            { checkpoint.answerType === "TEXT" && <p>{checkpoint.title}</p> }
-            { checkpoint.answerType !== "OPTION" && <p>{checkpoint.question}</p> }
-            { checkpoint.images.length > 0 && checkpoint.images.map(image => <img src={image} key={image}/> ) }
-            <form onSubmit={handleSubmit}>
-                { checkpoint.answerType === "4_CHAR" && <CodeInput id="answer" placeholder="- - - -" onChange={setAnswer}/> }
-                { checkpoint.answerType === "TEXT" && <TextInput id="answer" placeholder="respuesta" onChange={setAnswer}/> }
-                <br/>
-                <button type="submit">Enviar</button>
-            </form>
+            { checkpoint.answerType == "OPTION" && <QuestionOption checkpoint={checkpoint} sendAnswer={sendAnswerComponent}/>}
+            { checkpoint.answerType == "4_CHAR" && <QuestionCode checkpoint={checkpoint} sendAnswer={sendAnswerComponent}/>}
+            { checkpoint.answerType == "TEXT" && <QuestionText checkpoint={checkpoint} sendAnswer={sendAnswerComponent}/>}
         </>
     );
 };
