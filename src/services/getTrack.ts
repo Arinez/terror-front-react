@@ -14,7 +14,7 @@ export const getTrack = (team: Team): Promise<Track> => {
                     .then(r => r.json())
                     .then(currentStepResponse => {
                             resolve({
-                                currentStep: currentStepResponse.step == FINAL_STEP ? 999 : currentStepResponse, // FIXME: 999 is a hack to set up at the end of the track
+                                currentStep: currentStepResponse.step == FINAL_STEP ? 999 : currentStepResponse.step, // FIXME: 999 is a hack to set up at the end of the track
                                 steps: trackResponse.map(mapToStep)
                             });
                         }
@@ -33,6 +33,8 @@ const mapToStep = (step: any): Step => {
             title: step.checkpoint.name,
             question: step.checkpoint.question,
             answer: "",
+            answerType: step.checkpoint.answer_type,
+            images: step.images.map((image: { image: string }) => image.image),
         }
     }
 }

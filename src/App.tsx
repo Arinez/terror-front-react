@@ -31,7 +31,7 @@ function App({teamStorage, trackStorage}: AppProps) {
         )
     }
 
-    if (team?.token !== "admin token") {
+    if (team?.token !== "admin token") { // TODO: Remove this check
         return (<TrackPage
             team={team}
             storeTrack={trackStorage.store}

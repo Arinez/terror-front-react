@@ -14,15 +14,18 @@ export const sendAnswer = async (team: Team, answer: string, checkpointId: numbe
     while (pending) {
         await fetch(url, {...getSendAnswerRequestOptions(team), body})
             .then(r => {
-                if (r.status === 200) {
+                if (r.ok) {
                     pending = false;
-                    console.log("Answer sent")
+                    console.log("Answer sent", answer);
                 }
-                if (r.status === 409) {
+                else if (r.status === 409) {
                     pending = false;
                     console.log("Answer already sent");
                 }
-                pending = false;
+                else{
+                    console.log("else", r.status)
+                    pending = true;
+                }
             })
             .catch(console.error)
         await new Promise(resolve => setTimeout(resolve, thirtySecondaryTimeout));
