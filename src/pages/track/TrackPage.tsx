@@ -37,6 +37,7 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
 
     // TODO: this loads from the server all the data on every render but it should do it?
     // TODO: this should be done after the login
+    // TODO: what happens if the user do not have internet connection?
     useEffect(() => {
         getTrack(team)
             .then(setTrack)
@@ -44,9 +45,10 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
             .finally(() => setLoading(false));
     }, []);
 
+    useEffect(() => { storeTrack(track) }, [track]);
+
     useEffect(() => {
         setLoading(true);
-        storeTrack(track);
         const currentCheckpoint = getCurrentCheckpoint(track)
         setCheckpoint(currentCheckpoint);
         setLoading(false)
@@ -70,7 +72,7 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
         </>
     )
 
-    // TODO: rename this function
+    // TODO: rename this function and parameter
     function sendAnswerComponent(answerComponent: string) {
         if (answerComponent.length < 4) {
             console.error("Answer is not 4 characters long")
@@ -80,7 +82,8 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
         let newTrack = updateTrackAnswer(track, answerComponent);
         if (!isFinalCheckpoint(track)) {
             newTrack = updateTrackStep(newTrack);
-            sendAnswer(team, answerComponent, track.steps[track.currentStep].id);
+            const checkpointId = track.steps[track.currentStep - 1].id;
+            sendAnswer(team, answerComponent, checkpointId);
         }
         setTrack(newTrack)
         setAnswer("")
@@ -94,7 +97,6 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
         sendAnswerComponent(answer)
     }
 
-    console.log(checkpoint)
     if (checkpoint.answerType === "OPTION") return (
         <>
             <h1>{checkpoint.title}</h1>
