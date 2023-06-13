@@ -125,7 +125,8 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
     // TODO: split all this logic into components
     return (
         <>
-            <h1>{checkpoint.title}</h1>
+            <h1>{checkpoint.answerType != "TEXT" && checkpoint.title}</h1>
+            { checkpoint.answerType === "TEXT" && <p>{checkpoint.title}</p> }
             { checkpoint.answerType !== "OPTION" && <p>{checkpoint.question}</p> }
             { checkpoint.images.length > 0 && checkpoint.images.map(image => <img src={image} key={image}/> ) }
             <form onSubmit={handleSubmit}>
