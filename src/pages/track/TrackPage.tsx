@@ -11,6 +11,7 @@ import {updateTrackAnswer} from "../../services/updateTrackAnswer.ts";
 import {Track} from "../../types/Track.ts";
 import {Checkpoint} from "../../types/Checkpoint.ts";
 import {Team} from "../../types/Team.ts";
+import CodeInput from "../../components/CodeInput.tsx";
 
 const emptyTrack: Track = {currentStep: -1, steps: []}; // FIXME: -1 is a hack to avoid showing the final screen message
 
@@ -130,7 +131,7 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
             { checkpoint.answerType !== "OPTION" && <p>{checkpoint.question}</p> }
             { checkpoint.images.length > 0 && checkpoint.images.map(image => <img src={image} key={image}/> ) }
             <form onSubmit={handleSubmit}>
-                { checkpoint.answerType === "4_CHAR" && <TextInput id="answer" placeholder="- - - -" onChange={setAnswer} maxLength={4}/> }
+                { checkpoint.answerType === "4_CHAR" && <CodeInput id="answer" placeholder="- - - -" onChange={setAnswer}/> }
                 { checkpoint.answerType === "TEXT" && <TextInput id="answer" placeholder="respuesta" onChange={setAnswer}/> }
                 <br/>
                 <button type="submit">Enviar</button>

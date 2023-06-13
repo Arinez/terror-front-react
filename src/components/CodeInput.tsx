@@ -1,22 +1,22 @@
 import {ChangeEvent} from "react";
 
-type TextInputProps = {
+type CodeInputProps = {
     id: string,
     placeholder: string,
     onChange: (value: string) => void,
 }
 
-function TextInput({id, placeholder, onChange}: TextInputProps) {
+export default function CodeInput({id, placeholder, onChange}: CodeInputProps) {
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
-        onChange(e.target.value);
+        const value = e.target.value;
+        onChange(value.toUpperCase());
     }
 
     return (
         <input type="text" id={id}
                placeholder={placeholder}
-               onChange={handleChange}/>
+               onChange={handleChange}
+               maxLength={4}/>
     )
 }
-
-export default TextInput
