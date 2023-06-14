@@ -13,6 +13,7 @@ import {Team} from "../../types/Team.ts";
 import QuestionOption from "../../components/QuestionOption.tsx";
 import QuestionCode from "../../components/QuestionCode.tsx";
 import QuestionText from "../../components/QuestionText.tsx";
+import ErrorMessage from "../../components/ErrorMessage.tsx";
 
 const emptyTrack: Track = {currentStep: -1, steps: []}; // FIXME: -1 is a hack to avoid showing the final screen message
 
@@ -30,6 +31,8 @@ type TrackProps = {
 }
 
 export const TrackPage = ({team, storeTrack}: TrackProps) => {
+    const [isErrorShow, setIsErrorShow] = useState<boolean>();
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [checkpoint, setCheckpoint] = useState<Checkpoint>(emptyCheckpoint);
     const [track, setTrack] = useState<Track>(emptyTrack);
     const [loading, setLoading] = useState<boolean>(true);
@@ -41,11 +44,14 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
     useEffect(() => {
         getTrack(team)
             .then(setTrack)
-            .catch(console.error)
+            .catch((e) => {
+                showError('Error al cargar la carrera');
+                console.error(e);
+            })
             .finally(() => setLoading(false));
     }, []);
 
-    useEffect(() => { storeTrack(track) }, [track]);
+    useEffect(() => storeTrack(track), [track]);
 
     useEffect(() => {
         setLoading(true);
@@ -58,6 +64,15 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
         if (isFinalCheckpoint(track)) setFinal(true);
         else setFinal(false);
     }, [track]);
+
+    function showError(message: string) {
+        setIsErrorShow(true);
+        setErrorMessage(message);
+        setTimeout(() => {
+            setIsErrorShow(false);
+            setErrorMessage("");
+        }, 5000);
+    }
 
     // TODO: rename this function
     function sendAnswerComponent(answerComponent: string) {
@@ -83,9 +98,12 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
 
     return (
         <>
+            <h1>Equipo: {team.teamName}</h1>
+            <hr/>
             { checkpoint.answerType == "OPTION" && <QuestionOption checkpoint={checkpoint} sendAnswer={sendAnswerComponent}/>}
             { checkpoint.answerType == "4_CHAR" && <QuestionCode checkpoint={checkpoint} sendAnswer={sendAnswerComponent}/>}
             { checkpoint.answerType == "TEXT" && <QuestionText checkpoint={checkpoint} sendAnswer={sendAnswerComponent}/>}
+            {isErrorShow && <ErrorMessage message={errorMessage}/>}
         </>
     );
 };

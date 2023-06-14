@@ -22,11 +22,6 @@ body {
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -44,4 +39,12 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.error-message{
+  background-color: rgba(255, 0, 0, 0.5);
+  font-size: 0.9em;
+  margin: 0;
+  padding: 0;
+  border-radius: 1em;
 }
