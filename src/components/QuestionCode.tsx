@@ -21,7 +21,7 @@ export default function QuestionCode({checkpoint, sendAnswer}: QuestionCodeProps
 
     return (
         <>
-            <h1>{checkpoint.title}</h1>
+            <h2>{checkpoint.title}</h2>
             { <p>{checkpoint.question}</p> }
             { checkpoint.images.length > 0 && checkpoint.images.map(image => <img src={image} key={image}/> ) }
             <form onSubmit={handleSubmit}>

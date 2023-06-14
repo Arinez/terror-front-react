@@ -17,7 +17,7 @@ export default function QuestionOption({checkpoint, sendAnswer}: QuestionOptionP
 
     return (
         <>
-            <h1>{checkpoint.title}</h1>
+            <h2>{checkpoint.title}</h2>
             {checkpoint.images.length > 0 && checkpoint.images.map(image => <img src={image}/>)}
             <form onSubmit={sendOption}>
                 { checkpoint.question.split("|").map(line => {

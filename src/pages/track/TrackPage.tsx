@@ -83,6 +83,8 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
 
     return (
         <>
+            <h1>Equipo: {team.teamName}</h1>
+            <hr/>
             { checkpoint.answerType == "OPTION" && <QuestionOption checkpoint={checkpoint} sendAnswer={sendAnswerComponent}/>}
             { checkpoint.answerType == "4_CHAR" && <QuestionCode checkpoint={checkpoint} sendAnswer={sendAnswerComponent}/>}
             { checkpoint.answerType == "TEXT" && <QuestionText checkpoint={checkpoint} sendAnswer={sendAnswerComponent}/>}
