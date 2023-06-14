@@ -45,7 +45,7 @@ export const TrackPage = ({team, storeTrack}: TrackProps) => {
             .finally(() => setLoading(false));
     }, []);
 
-    useEffect(() => { storeTrack(track) }, [track]);
+    useEffect(() => storeTrack(track), [track]);
 
     useEffect(() => {
         setLoading(true);
