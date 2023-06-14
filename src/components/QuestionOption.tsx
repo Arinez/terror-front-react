@@ -1,5 +1,6 @@
-import {FormEvent} from "react";
+import {FormEvent, useState} from "react";
 import {Checkpoint} from "../types/Checkpoint.ts";
+import ErrorMessage from "./ErrorMessage.tsx";
 
 type QuestionOptionProps = {
     checkpoint: Checkpoint,
@@ -7,12 +8,28 @@ type QuestionOptionProps = {
 }
 
 export default function QuestionOption({checkpoint, sendAnswer}: QuestionOptionProps) {
+    const [isErrorShow, setIsErrorShow] = useState<boolean>();
+    const [errorMessage, setErrorMessage] = useState<string>("");
+
+    function showError(message: string) {
+        setIsErrorShow(true);
+        setErrorMessage(message);
+        setTimeout(() => {
+            setIsErrorShow(false);
+            setErrorMessage("");
+        }, 5000);
+    }
 
     function sendOption(e: FormEvent) {
         e.preventDefault(); // Prevents the page from reloading
-        if (!document.querySelector('input[name="answer"]:checked')) return; // TODO: Show error message, answer not selected
+        if (!document.querySelector('input[name="answer"]:checked')) {
+            console.error("Answer not selected")
+            showError("Debes seleccionar una respuesta")
+            return;
+        } // TODO: Show error message, answer not selected
         const answer = (document.querySelector('input[name="answer"]:checked') as HTMLInputElement).value;
         sendAnswer(answer)
+        setIsErrorShow(false);
     }
 
     return (
@@ -35,6 +52,7 @@ export default function QuestionOption({checkpoint, sendAnswer}: QuestionOptionP
                     );
                 }) }
                 <br/>
+                {isErrorShow && <ErrorMessage message={errorMessage}/>}
                 <button type="submit">Enviar</button>
             </form>
         </>
