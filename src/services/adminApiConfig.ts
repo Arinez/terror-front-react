@@ -29,7 +29,7 @@ export const getAdminToken = (email: string, password: string): Promise<Admin> =
     })
 }
 
-export const getTeams = (token: string): Promise<AdminTeam> => {
+export const getTeams = (token: string): Promise<AdminTeam[]> => {
     const requestOptions = {
         method: "get",
         headers: {
