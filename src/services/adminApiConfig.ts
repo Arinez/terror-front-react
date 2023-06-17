@@ -87,3 +87,26 @@ export const createTeam = (token: string, name: string, leader: string, members:
             .catch(reject)
     })
 }
+export const updateTeam = (token: string, id: number, name: string, leader: string, members: string[], password: string): Promise<boolean> => {
+    const requestOptions = {
+        method: "put",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    }
+    const url = `${HOST}/teams/${id}`
+    const body = JSON.stringify({name, username: leader, members, password})
+
+    return new Promise((resolve, reject) => {
+        fetch(url, {...requestOptions, body})
+            .then(response => {
+                if (response.ok) {
+                    resolve(true);
+                } else {
+                    reject(response.statusText);
+                }
+            })
+            .catch(reject)
+    })
+}

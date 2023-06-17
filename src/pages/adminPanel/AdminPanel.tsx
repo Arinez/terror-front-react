@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import ErrorMessage from "../../components/ErrorMessage.tsx";
 import Loading from "../../components/Loading.tsx";
 import {Admin} from "../../types/Admin.ts";
-import {createTeam, getTeams} from "../../services/adminApiConfig.ts";
+import {createTeam, getTeams, updateTeam} from "../../services/adminApiConfig.ts";
 import {AdminTeam} from "../../types/AdminTeam.ts";
 
 type AdminPanelProps = {
@@ -15,6 +15,8 @@ export const AdminPanel = ({admin}: AdminPanelProps) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [teams, setTeams] = useState<AdminTeam[]>([])
     const [showCreateTeam, setShowCreateTeam] = useState<boolean>(false)
+    const [showEditTeam, setShowEditTeam] = useState<boolean>(false)
+    const [teamToEdit, setTeamToEdit] = useState<AdminTeam>()
 
     useEffect(() => {
         setLoading(true);
@@ -40,44 +42,96 @@ export const AdminPanel = ({admin}: AdminPanelProps) => {
         setShowCreateTeam(true)
     };
 
-    const sendTeam = (e) => {
-        e.preventDefault();
-        const name = e.target[0].value;
-        const leader = e.target[1].value;
-        const members = e.target[2].value;
-        const password = e.target[3].value;
-        setLoading(true);
-        createTeam(admin.token, name, leader, members, password)
-            .catch((e) => {
-                console.error(e);
-                showError('Error al cargar equipos');
-            })
-            .finally(() => setLoading(false));
-        console.log(name, leader, members, password)
+    const showEditTeamPanel = (id: number) => {
+        const currentTeam = teams.find(team => team.id === id);
+        setTeamToEdit(currentTeam)
+        setShowEditTeam(true)
     }
 
-    if (showCreateTeam) return (
-        <>
-            <p>Create team</p>
-            <form onSubmit={sendTeam}>
-                <label htmlFor="name">Nombre</label>
-                <input type="text" id="name"/>
+    if (showEditTeam) {
+        const sendUpdateTeam = (e: any) => {
+            e.preventDefault();
+            const id = e.target[0].value;
+            const name = e.target[1].value;
+            const leader = e.target[2].value;
+            const members = e.target[3].value;
+            const password = e.target[4].value;
+            console.log(id, name, leader, members, password)
+            setLoading(true);
+            updateTeam(admin.token, id, name, leader, members, password)
+                .catch((e) => {
+                    console.error(e);
+                    showError('Error al cargar equipos');
+                })
+                .finally(() => setLoading(false));
+        }
+
+        return (
+            <>
+                <p>Edit team: {teamToEdit?.id}</p>
                 <br/>
-                <label htmlFor="leader">Lider</label>
-                <input type="text" id="leader"/>
+                <form onSubmit={sendUpdateTeam}>
+                    <input type="hidden" id="id" defaultValue={teamToEdit?.id}/>
+                    <label htmlFor="name">Nombre</label>
+                    <input type="text" id="name" defaultValue={teamToEdit?.name}/>
+                    <br/>
+                    <label htmlFor="leader">Lider</label>
+                    <input type="text" id="leader" defaultValue={teamToEdit?.leader}/>
+                    <br/>
+                    <label htmlFor="members">Miembros</label>
+                    <input type="text" id="members" defaultValue={teamToEdit?.members}/>
+                    <br/>
+                    <label htmlFor="password">New password</label>
+                    <input type="text" id="password"/>
+                    <br/>
+                    <button type="submit">Actualizar</button>
+                </form>
                 <br/>
-                <label htmlFor="members">Miembros</label>
-                <input type="text" id="members"/>
+                <button onClick={() => setShowEditTeam(false)}>Cancelar</button>
+            </>
+        )
+    }
+
+    if (showCreateTeam) {
+        const sendTeam = (e: any) => {
+            e.preventDefault();
+            const name = e.target[0].value;
+            const leader = e.target[1].value;
+            const members = e.target[2].value;
+            const password = e.target[3].value;
+            setLoading(true);
+            createTeam(admin.token, name, leader, members, password)
+                .catch((e) => {
+                    console.error(e);
+                    showError('Error al cargar equipos');
+                })
+                .finally(() => setLoading(false));
+            console.log(name, leader, members, password)
+        }
+
+        return (
+            <>
+                <p>Create team</p>
+                <form onSubmit={sendTeam}>
+                    <label htmlFor="name">Nombre</label>
+                    <input type="text" id="name"/>
+                    <br/>
+                    <label htmlFor="leader">Lider</label>
+                    <input type="text" id="leader"/>
+                    <br/>
+                    <label htmlFor="members">Miembros</label>
+                    <input type="text" id="members"/>
+                    <br/>
+                    <label htmlFor="password">password</label>
+                    <input type="text" id="password"/>
+                    <br/>
+                    <button type="submit">Crear</button>
+                </form>
                 <br/>
-                <label htmlFor="password">password</label>
-                <input type="text" id="password"/>
-                <br/>
-                <button type="submit">Crear</button>
-            </form>
-            <br/>
-            <button onClick={() => setShowCreateTeam(false)}>Cancelar</button>
-        </>
-    )
+                <button onClick={() => setShowCreateTeam(false)}>Cancelar</button>
+            </>
+        )
+    }
 
     return (
         <div>
@@ -103,7 +157,7 @@ export const AdminPanel = ({admin}: AdminPanelProps) => {
                                 <td>{team.leader}</td>
                                 <td>{team.members}</td>
                                 <td>
-                                    <button>Ver</button>
+                                    <button onClick={() => showEditTeamPanel(team.id)}>Ver</button>
                                 </td>
                             </tr>
                         ))}
