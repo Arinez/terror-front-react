@@ -6,12 +6,15 @@ import {Team} from "../../types/Team.ts";
 import PasswordInput from "../../components/PasswordInput.tsx";
 import ErrorMessage from "../../components/ErrorMessage.tsx";
 import Loading from "../../components/Loading.tsx";
+import {getAdminToken} from "../../services/adminApiConfig.ts";
+import {Admin} from "../../types/Admin.ts";
 
 type LoginPageProps = {
     useTeam: Dispatch<Team>,
+    useAdmin: Dispatch<Admin>,
 }
 
-export const LoginPage = ({useTeam}: LoginPageProps) => {
+export const LoginPage = ({useTeam, useAdmin}: LoginPageProps) => {
     const [isErrorShow, setIsErrorShow] = useState<boolean>();
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false)
@@ -30,19 +33,28 @@ export const LoginPage = ({useTeam}: LoginPageProps) => {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault(); // Prevents the page from reloading
         setLoading(true);
-        getTeamToken(leader.toLowerCase(), password.toLowerCase())
-            .then(team => {
-                if (team.token !== undefined) {
-                    useTeam(team); // FIXME: React Hook "useTeam" cannot be called inside a callback.
-                }else{
-                    showError('Error al iniciar sesión')
-                }
-            })
-            .catch((e) => {
-                showError('Error al iniciar sesión');
-                console.error(e);
-            })
-            .finally(() => setLoading(false));
+        if (leader.startsWith('admin:')) {
+            getAdminToken(leader.replace('admin:', '').toLowerCase(), password.toLowerCase())
+                .then(useAdmin)
+                .catch((e) => {
+                    showError(e);
+                })
+                .finally(() => setLoading(false));
+        } else {
+            getTeamToken(leader.toLowerCase(), password.toLowerCase())
+                .then(team => {
+                    if (team.token !== undefined) {
+                        useTeam(team); // FIXME: React Hook "useTeam" cannot be called inside a callback.
+                    } else {
+                        showError('Error al iniciar sesión')
+                    }
+                })
+                .catch((e) => {
+                    showError('Error al iniciar sesión');
+                    console.error(e);
+                })
+                .finally(() => setLoading(false));
+        }
     };
 
     return (
